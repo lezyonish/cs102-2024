@@ -1,10 +1,6 @@
-"""Функция выводит текст Hello, world!"""
+"""Функция выводит текст"""
 
 
 def text():
     """Возвращает текст"""
-    message = "Hello, world!"
-    return message
-
-
-print(text())
+    return "message"
