@@ -12,12 +12,17 @@ def is_prime(n: int) -> bool:
     >>> is_prime(8)
     False
     """
-    if n < 2:
+    count = 0
+    for i in range(2, n - 1):
+        if abs(n) % i == 0:
+            count += 1
+            break
+    if n <= 1:
+        count += 1
+    if count == 0:
+        return True
+    else:
         return False
-    for i in range(2, int(n**0.5) + 1):
-        if n % i == 0:
-            return False
-    return True
 
 
 def gcd(a: int, b: int) -> int:
@@ -28,9 +33,11 @@ def gcd(a: int, b: int) -> int:
     >>> gcd(3, 7)
     1
     """
-    while b != 0:
-        a, b = b, a % b
-    return abs(a)
+    m = 0
+    for i in range(1, max(a, b) + 1):
+        if a % i == 0 and b % i == 0 and i > m:
+            m = i
+    return m
 
 
 def multiplicative_inverse(e: int, phi: int) -> int:
@@ -40,20 +47,14 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     >>> multiplicative_inverse(7, 40)
     23
     """
-    original_phi = phi
-    x0, x1 = 0, 1
-    if phi == 1:
-        return 0
+    d = 1
+    if (e == 1) or (phi == 1):
+        d = 0
+    else:
+        while (d * e) % phi != 1:
+            d += 1
 
-    while e > 1:
-        q = e // phi
-        phi, e = e % phi, phi  # Update e and phi
-        x0, x1 = x1 - q * x0, x0  # Update x0 and x1
-
-    if x1 < 0:
-        x1 += original_phi  # Ensure the result is positive
-
-    return x1
+    return d
 
 
 def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[int, int]]:
@@ -61,11 +62,8 @@ def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[in
         raise ValueError("Both numbers must be prime.")
     elif p == q:
         raise ValueError("p and q cannot be equal")
-
-    # n = pq
     n = p * q
 
-    # phi = (p-1)(q-1)
     phi = (p - 1) * (q - 1)
 
     # Choose an integer e such that e and phi(n) are coprime
@@ -82,7 +80,7 @@ def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[in
 
     # Return public and private keypair
     # Public key is (e, n) and private key is (d, n)
-    return (e, n), (d, n)
+    return ((e, n), (d, n))
 
 
 def encrypt(pk: tp.Tuple[int, int], plaintext: str) -> tp.List[int]:
@@ -118,3 +116,4 @@ if __name__ == "__main__":
     print("Decrypting message with public key ", public, " . . .")
     print("Your message is:")
     print(decrypt(public, encrypted_msg))
+
