@@ -23,7 +23,8 @@ def encrypt_poly_shift(plaintext: str, odd_shift: int, even_shift: int) -> str:
         else:
             encrypted_text.append(char)
 
-    return ''.join(encrypted_text)
+    return "".join(encrypted_text)
+
 
 plaintext = input()
 odd_shift = int(input())
