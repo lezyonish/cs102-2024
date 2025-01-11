@@ -53,3 +53,4 @@ def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
 if __name__ == "__main__":
     print(encrypt_caesar(input()))
     print(decrypt_caesar(input()))
+
