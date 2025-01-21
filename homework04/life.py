@@ -148,4 +148,3 @@ class GameOfLife:
         pass
         with filename.open("w") as f:
             f.writelines([str(row) + "\n" for row in self.curr_generation])
-
