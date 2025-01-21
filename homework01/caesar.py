@@ -1,26 +1,30 @@
 def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
     """
     Encrypts plaintext using a Caesar cipher.
-
     >>> encrypt_caesar("PYTHON")
-    'SBWKRQ'
+    "SBWKRQ"
     >>> encrypt_caesar("python")
-    'sbwkrq'
+    "sbwkrq"
     >>> encrypt_caesar("Python3.6")
-    'Sbwkrq3.6'
+    "Sbwkrq3.6"
     >>> encrypt_caesar("")
-    ''
+    ""
     """
     ciphertext = ""
-    for S in plaintext:
-        if "A" <= S <= "Z":
-            new_s = chr((ord(S) - ord("A") + shift) % 26 + ord("A"))
-            ciphertext += new_s
-        elif "a" <= S <= "z":
-            new_s = chr((ord(S) - ord("a") + shift) % 26 + ord("a"))
-            ciphertext += new_s
+    for char in plaintext:
+        if char.isalpha():
+            if char.islower():
+                if ord(char) < ord("z") - shift + 1:
+                    ciphertext += chr(ord(char) + shift)
+                else:
+                    ciphertext += chr(ord(char) + shift - 26)
+            else:
+                if ord(char) < ord("Z") - shift + 1:
+                    ciphertext += chr(ord(char) + shift)
+                else:
+                    ciphertext += chr(ord(char) + shift - 26)
         else:
-            ciphertext += S
+            ciphertext += char
     return ciphertext
 
 
@@ -29,28 +33,27 @@ def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
     Decrypts a ciphertext using a Caesar cipher.
 
     >>> decrypt_caesar("SBWKRQ")
-    'PYTHON'
+    "PYTHON"
     >>> decrypt_caesar("sbwkrq")
-    'python'
+    "python"
     >>> decrypt_caesar("Sbwkrq3.6")
-    'Python3.6'
+    "Python3.6"
     >>> decrypt_caesar("")
-    ''
+    ""
     """
     plaintext = ""
-    for S in ciphertext:
-        if "A" <= S <= "Z":
-            new_s = chr((ord(S) - ord("A") - shift) % 26 + ord("A"))
-            plaintext += new_s
-        elif "a" <= S <= "z":
-            new_s = chr((ord(S) - ord("a") - shift) % 26 + ord("a"))
-            plaintext += new_s
+    for char in ciphertext:
+        if char.isalpha():
+            if char.islower():
+                if ord(char) > ord("a") + shift - 1:
+                    plaintext += chr(ord(char) - shift)
+                else:
+                    plaintext += chr(ord(char) - shift + 26)
+            else:
+                if ord(char) > ord("A") + shift - 1:
+                    plaintext += chr(ord(char) - shift)
+                else:
+                    plaintext += chr(ord(char) - shift + 26)
         else:
-            plaintext += S
+            plaintext += char
     return plaintext
-
-
-if __name__ == "__main__":
-    print(encrypt_caesar(input()))
-    print(decrypt_caesar(input()))
-
