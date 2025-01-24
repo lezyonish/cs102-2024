@@ -1,7 +1,7 @@
 import random
 import typing as tp
 
-import pygame
+import pygamegit
 from pygame.locals import *
 
 Cell = tp.Tuple[int, int]
